@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <title>{{ config('app.name', 'Laravel') }}</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -13,21 +13,25 @@
             @include('layouts.navigation')
 
             <div class="content-wrapper">
-                @isset($header)
+                @if(isset($header) || View::hasSection('header'))
                     <section class="content-header">
                         <div class="container-fluid">
                             <div class="row mb-2">
                                 <div class="col-sm-6">
-                                    <h1>{{ $header }}</h1>
+                                    <h1>{{ $header ?? $__env->yieldContent('header') }}</h1>
                                 </div>
                             </div>
                         </div>
                     </section>
-                @endisset
+                @endif
 
                 <section class="content">
                     <div class="container-fluid">
-                        {{ $slot }}
+                        @isset($slot)
+                            {{ $slot }}
+                        @else
+                            @yield('content')
+                        @endisset
                     </div>
                 </section>
             </div>
