@@ -28,7 +28,7 @@
 
         <!-- USUARIOS -->
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#"
+            <a href="{{ route('usuarios') }}"
                class="nav-link fw-semibold text-dark">
                 Usuarios
             </a>
