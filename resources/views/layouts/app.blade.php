@@ -6,31 +6,38 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="hold-transition sidebar-mini layout-fixed">
+        <div class="wrapper">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="content-wrapper">
+                @isset($header)
+                    <section class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <h1>{{ $header }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                @endisset
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <section class="content">
+                    <div class="container-fluid">
+                        {{ $slot }}
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer">
+                <div class="float-end d-none d-sm-inline">
+                    {{ config('app.name', 'Laravel') }}
+                </div>
+                <strong>&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}.</strong>
+            </footer>
         </div>
     </body>
 </html>

@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
@@ -40,7 +41,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'id_rol' => 2, // 👈 rol por defecto (Empleado)
+            'id_rol' => $this->getDefaultEmployeeRoleId(),
         ]);
 
         event(new Registered($user));
@@ -48,5 +49,22 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    private function getDefaultEmployeeRoleId(): int
+    {
+        $roleId = DB::table('roles')
+            ->where('nombre', 'Empleado')
+            ->value('id');
+
+        if ($roleId) {
+            return $roleId;
+        }
+
+        return DB::table('roles')->insertGetId([
+            'nombre' => 'Empleado',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
